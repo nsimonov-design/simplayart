@@ -1,0 +1,75 @@
+<section class="pa" aria-label="3D-конструктор PLAY">
+  <aside class="pa-left" aria-label="Детали">
+    <div class="pa-cats" id="paCats" role="tablist" aria-label="Категории деталей"></div>
+    <div class="pa-lib" id="paLib"></div>
+    <label class="pa-magnet"><input type="checkbox" id="paMagnet" checked> Новая деталь — на вершину</label>
+    <p class="pa-tip">Снимите галочку — и детали будут вставать рядом, на пол.</p>
+  </aside>
+
+  <div class="pa-stage" id="paStage">
+    <canvas id="paCanvas" aria-label="3D-сцена: соберите свою пирамиду"></canvas>
+    <div class="pa-tools">
+      <button type="button" id="paUndo" title="Отменить (Ctrl+Z)" aria-label="Отменить">↶</button>
+      <button type="button" id="paRedo" title="Вернуть (Ctrl+Shift+Z)" aria-label="Вернуть">↷</button>
+      <button type="button" id="paFit">Показать всё</button>
+      <button type="button" id="paRandom">Случайная пирамида</button>
+      <button type="button" id="paDemo">Пример</button>
+      <button type="button" id="paClear">Очистить</button>
+    </div>
+    <p class="pa-hint">Вращайте сцену мышью или пальцем · колесо или щипок — масштаб · нажмите на деталь, чтобы выбрать</p>
+    <div class="pa-rec" id="paRec" hidden><p>Записываем видео вращения…</p><progress id="paRecBar" max="1" value="0"></progress></div>
+    <div class="pa-toast" id="paToast" role="status" hidden></div>
+    <button type="button" class="pa-go" id="paGo" hidden>Настроить деталь ↓</button>
+    <noscript><p class="pa-nojs">Для конструктора нужен JavaScript и браузер с поддержкой WebGL.</p></noscript>
+  </div>
+
+  <aside class="pa-right" aria-label="Настройки детали">
+    <div id="paEmpty" class="pa-box">
+      <h3>Деталь не выбрана</h3>
+      <p class="muted">Нажмите на деталь в сцене или в списке «Состав», чтобы поменять фактуру, принт, цвет и положение.</p>
+    </div>
+    <div id="paSel" class="pa-box" hidden>
+      <div class="pa-selhead"><b id="paSelName"></b><span><button type="button" id="paDup">Копия</button><button type="button" id="paDel">Удалить</button></span></div>
+      <h3>Положение</h3>
+      <div class="pa-snaps">
+        <button type="button" id="paTop" title="Поставить на самую верхнюю деталь">На вершину</button>
+        <button type="button" id="paBeside" title="Поставить вплотную к ближайшей детали; нажмите ещё раз — другая сторона">Рядом</button>
+        <button type="button" id="paPush" title="Вдавить в соседнюю деталь — объекты проникают друг в друга">Вдавить</button>
+        <button type="button" id="paFloor" title="Опустить на подиум">На пол</button>
+      </div>
+      <div class="pa-mode" role="group" aria-label="Что делают стрелки в сцене">
+        <button type="button" data-mode="translate" class="on">Стрелки: двигать</button>
+        <button type="button" data-mode="rotate">Стрелки: вращать</button>
+      </div>
+      <div id="paSliders" class="pa-sliders"></div>
+      <h3>Фактура</h3>
+      <div class="pa-chips" id="paTex"></div>
+      <h3>Принт</h3>
+      <div class="pa-prints" id="paPrint"></div>
+      <h3>Цвет</h3>
+      <div class="pa-sws" id="paC1"></div>
+      <div id="paC2Box"><h3>Цвет принта</h3><div class="pa-sws" id="paC2"></div></div>
+    </div>
+    <div class="pa-box">
+      <h3>Сохранить</h3>
+      <div class="pa-exp">
+        <button type="button" id="paVidReels" class="pa-main">Видео для Reels 9:16</button>
+        <button type="button" id="paVidSq">Видео 1:1</button>
+        <button type="button" id="paGLB">3D-модель .glb</button>
+        <button type="button" id="paPNG">Картинка .png</button>
+        <button type="button" id="paShare">Ссылка на сборку</button>
+      </div>
+      <p class="pa-note">На видео, картинках и моделях остаётся знак sim.play.art. <a href="#rules">Правила использования</a></p>
+    </div>
+    <div class="pa-box">
+      <h3>Состав · <span id="paCount">0</span></h3>
+      <ol id="paLayers" class="pa-layers"></ol>
+    </div>
+  </aside>
+</section>
+
+<dialog id="paVideoDlg" class="pa-dlg" aria-label="Видео готово">
+  <video id="paVideo" controls playsinline loop autoplay muted></video>
+  <p id="paVideoNote" class="muted"></p>
+  <div class="pa-dlg-btns"><a id="paVideoSave" class="btn btn-fill" href="#">Скачать видео</a><button type="button" id="paVideoClose" class="btn btn-ghost">Закрыть</button></div>
+</dialog>

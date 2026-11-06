@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3D-конструктор PLAY — соберите свою пирамиду · sim.play.art</title>
+<meta name="description" content="Поиграйте в 3D-конструктор по мотивам керамических пирамид PLAY Ольги Симоновой (sim.play.art): шарики, фрукты, геометрия, фактуры и принты. Сохраните видео для Reels и 3D-модель.">
+<link rel="canonical" href="https://simplayart.ru/play/">
+
+<meta name="author" content="Ольга Симонова">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="sim.play.art — Ольга Симонова">
+<meta property="og:title" content="3D-конструктор PLAY — соберите свою пирамиду · sim.play.art">
+<meta property="og:description" content="Поиграйте в 3D-конструктор по мотивам керамических пирамид PLAY Ольги Симоновой (sim.play.art): шарики, фрукты, геометрия, фактуры и принты. Сохраните видео для Reels и 3D-модель.">
+<meta property="og:url" content="https://simplayart.ru/play/">
+<meta property="og:image" content="https://simplayart.ru/img/og-olga-simonova.jpg">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#FBF8F5">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='7' cy='16' r='5' fill='%233B55C9'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E27896'/%3E%3Ccircle cx='25' cy='16' r='5' fill='%23BFD86A'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@300;400;500&display=swap&subset=cyrillic" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css?v=d02bf5cd">
+<link rel="stylesheet" href="../assets/play/play.css?v=2ff35409"><link rel="modulepreload" href="../assets/play/three/three.module.min.js">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://simplayart.ru/#website","url":"https://simplayart.ru/","name":"Ольга Симонова — художница (sim.play.art)","inLanguage":["ru","en"],"publisher":{"@id":"https://simplayart.ru/#person"},"about":{"@id":"https://simplayart.ru/#person"}},{"@type":"WebApplication","@id":"https://simplayart.ru/play/#app","name":"3D-конструктор PLAY","url":"https://simplayart.ru/play/","applicationCategory":"GameApplication","operatingSystem":"Любая, в браузере","inLanguage":"ru","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"RUB"},"description":"Браузерный 3D-конструктор по мотивам керамических пирамид PLAY художницы Ольги Симоновой (sim.play.art): детали, фактуры, принты, экспорт видео и 3D-модели.","creator":{"@id":"https://simplayart.ru/#person"},"isBasedOn":{"@type":"CreativeWork","name":"PLAY","url":"https://simplayart.ru/works/play/","creator":{"@id":"https://simplayart.ru/#person"}}},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Главная","item":"https://simplayart.ru/"},{"@type":"ListItem","position":2,"name":"3D-конструктор PLAY","item":"https://simplayart.ru/play/"}]}]}</script>
+</head>
+<body>
+<a class="skip" href="#main">К содержанию</a>
+<header class="site-head"><div class="wrap head-in">
+<a class="logo" href="../" aria-label="sim.play.art — на главную"><span class="logo-dots"><i></i><i></i><i></i></span>sim.play.art</a>
+<button class="burger" aria-label="Меню" aria-expanded="false" aria-controls="nav"><span></span><span></span><span></span></button>
+<nav class="nav" id="nav" aria-label="Основная навигация"><a href="../#projects">Проекты</a><a href="../#play-video">Собери · Разбери</a><a href="../about/">Обо мне</a><a href="../about/#cv">Выставки</a><a href="../#buy">Где купить</a><a href="../play/" aria-current="page">Поиграть</a><a class="lang" href="../en/" hreflang="en" lang="en">EN</a></nav>
+</div></header>
+<main id="main">
+<section class="pa" aria-label="3D-конструктор PLAY">
+  <aside class="pa-left" aria-label="Детали">
+    <div class="pa-cats" id="paCats" role="tablist" aria-label="Категории деталей"></div>
+    <div class="pa-lib" id="paLib"></div>
+    <label class="pa-magnet"><input type="checkbox" id="paMagnet" checked> Новая деталь — на вершину</label>
+    <p class="pa-tip">Снимите галочку — и детали будут вставать рядом, на пол.</p>
+  </aside>
+
+  <div class="pa-stage" id="paStage">
+    <canvas id="paCanvas" aria-label="3D-сцена: соберите свою пирамиду"></canvas>
+    <div class="pa-tools">
+      <button type="button" id="paUndo" title="Отменить (Ctrl+Z)" aria-label="Отменить">↶</button>
+      <button type="button" id="paRedo" title="Вернуть (Ctrl+Shift+Z)" aria-label="Вернуть">↷</button>
+      <button type="button" id="paFit">Показать всё</button>
+      <button type="button" id="paRandom">Случайная пирамида</button>
+      <button type="button" id="paDemo">Пример</button>
+      <button type="button" id="paClear">Очистить</button>
+    </div>
+    <p class="pa-hint">Вращайте сцену мышью или пальцем · колесо или щипок — масштаб · нажмите на деталь, чтобы выбрать</p>
+    <div class="pa-rec" id="paRec" hidden><p>Записываем видео вращения…</p><progress id="paRecBar" max="1" value="0"></progress></div>
+    <div class="pa-toast" id="paToast" role="status" hidden></div>
+    <button type="button" class="pa-go" id="paGo" hidden>Настроить деталь ↓</button>
+    <noscript><p class="pa-nojs">Для конструктора нужен JavaScript и браузер с поддержкой WebGL.</p></noscript>
+  </div>
+
+  <aside class="pa-right" aria-label="Настройки детали">
+    <div id="paEmpty" class="pa-box">
+      <h3>Деталь не выбрана</h3>
+      <p class="muted">Нажмите на деталь в сцене или в списке «Состав», чтобы поменять фактуру, принт, цвет и положение.</p>
+    </div>
+    <div id="paSel" class="pa-box" hidden>
+      <div class="pa-selhead"><b id="paSelName"></b><span><button type="button" id="paDup">Копия</button><button type="button" id="paDel">Удалить</button></span></div>
+      <h3>Положение</h3>
+      <div class="pa-snaps">
+        <button type="button" id="paTop" title="Поставить на самую верхнюю деталь">На вершину</button>
+        <button type="button" id="paBeside" title="Поставить вплотную к ближайшей детали; нажмите ещё раз — другая сторона">Рядом</button>
+        <button type="button" id="paPush" title="Вдавить в соседнюю деталь — объекты проникают друг в друга">Вдавить</button>
+        <button type="button" id="paFloor" title="Опустить на подиум">На пол</button>
+      </div>
+      <div class="pa-mode" role="group" aria-label="Что делают стрелки в сцене">
+        <button type="button" data-mode="translate" class="on">Стрелки: двигать</button>
+        <button type="button" data-mode="rotate">Стрелки: вращать</button>
+      </div>
+      <div id="paSliders" class="pa-sliders"></div>
+      <h3>Фактура</h3>
+      <div class="pa-chips" id="paTex"></div>
+      <h3>Принт</h3>
+      <div class="pa-prints" id="paPrint"></div>
+      <h3>Цвет</h3>
+      <div class="pa-sws" id="paC1"></div>
+      <div id="paC2Box"><h3>Цвет принта</h3><div class="pa-sws" id="paC2"></div></div>
+    </div>
+    <div class="pa-box">
+      <h3>Сохранить</h3>
+      <div class="pa-exp">
+        <button type="button" id="paVidReels" class="pa-main">Видео для Reels 9:16</button>
+        <button type="button" id="paVidSq">Видео 1:1</button>
+        <button type="button" id="paGLB">3D-модель .glb</button>
+        <button type="button" id="paPNG">Картинка .png</button>
+        <button type="button" id="paShare">Ссылка на сборку</button>
+      </div>
+      <p class="pa-note">На видео, картинках и моделях остаётся знак sim.play.art. <a href="#rules">Правила использования</a></p>
+    </div>
+    <div class="pa-box">
+      <h3>Состав · <span id="paCount">0</span></h3>
+      <ol id="paLayers" class="pa-layers"></ol>
+    </div>
+  </aside>
+</section>
+
+<dialog id="paVideoDlg" class="pa-dlg" aria-label="Видео готово">
+  <video id="paVideo" controls playsinline loop autoplay muted></video>
+  <p id="paVideoNote" class="muted"></p>
+  <div class="pa-dlg-btns"><a id="paVideoSave" class="btn btn-fill" href="#">Скачать видео</a><button type="button" id="paVideoClose" class="btn btn-ghost">Закрыть</button></div>
+</dialog>
+
+<section class="pa-about"><div class="wrap">
+<div class="pa-about-grid">
+<div>
+<p class="eyebrow">Поиграть</p>
+<h1>3D-конструктор PLAY</h1>
+<p class="lead">Соберите свою пирамиду из деталей, придуманных по мотивам работ Ольги Симоновой (sim.play.art): воздушные шарики, груша, яблоко и огрызок, облако, лестница, волна, корона, геометрические фигуры и основания.</p>
+<h2 style="font-size:1.5rem">Зачем этот конструктор</h2>
+<p>В практике Ольги игра — не тема, а метод. Пирамиды PLAY собираются на магнитах: элементы можно соединять, вращать и менять местами, и зритель становится соавтором работы. Конструктор продолжает этот принцип в цифровом виде: правила простые, а вариаций — бесконечно много.</p>
+<p>Здесь можно сделать то, чего нельзя с керамикой: поставить детали друг в друга, сменить глазурь одним касанием, собрать пирамиду высотой в метр. Это игра по мотивам работ, а не копии конкретных объектов. Настоящие пирамиды PLAY — <a href="../works/play/">на странице проекта</a>, купить их можно в галерее SAMPLE или напрямую у художницы.</p>
+</div>
+<div>
+<h2 style="font-size:1.5rem">Как сохранить</h2>
+<ol>
+<li><b>Видео для Reels 9:16</b> или <b>квадратное 1:1</b> — оборот вокруг оси и финальная карточка, MP4 в Safari и свежем Chrome.</li>
+<li><b>3D-модель .glb</b> — вместе с подиумом; открывается в Blender, «Средстве 3D-просмотра» Windows, на Sketchfab.</li>
+<li><b>Картинка .png</b> — снимок сцены как на экране.</li>
+<li><b>Ссылка на сборку</b> — пирамида хранится прямо в адресе, ей можно поделиться.</li>
+</ol>
+<p class="muted">Выложили свою сборку? Отметьте @sim.play.art — Ольге будет интересно посмотреть.</p>
+</div>
+</div>
+<div class="pa-rules" id="rules">
+<h2>Правила использования</h2>
+<ul>
+<li>Формы деталей созданы по мотивам работ Ольги Симоновой (sim.play.art). Права на них остаются у художницы.</li>
+<li>Свои сборки можно свободно публиковать в соцсетях и блогах — с отметкой @sim.play.art или ссылкой на simplayart.ru/play.</li>
+<li>Знак sim.play.art на деталях, подиуме, видео и картинках — часть сборки, пожалуйста, не удаляйте его.</li>
+<li>Коммерческое использование — продажа, печать на 3D-принтере на продажу, использование в рекламе и чужих продуктах — только с письменного согласия художницы. Написать: <a href="https://t.me/simplayart" rel="noopener" target="_blank">Telegram</a> или <a href="https://www.instagram.com/sim.play.art/" rel="noopener" target="_blank">Instagram</a>.</li>
+<li>Конструктор работает целиком в вашем браузере: сборки никуда не отправляются и не хранятся на сервере.</li>
+</ul>
+</div>
+</div></section>
+</main>
+<footer class="site-foot" id="contact"><div class="wrap">
+<div class="foot-grid">
+<div><p class="foot-title">Давайте поиграем</p><p class="muted" style="max-width:30em">Мастерская в Санкт-Петербурге. Покупка работ, выставки и коллаборации — пишите в Telegram или Instagram.</p>
+<div class="socials"><a class="ig" href="https://www.instagram.com/sim.play.art/" rel="me noopener" target="_blank">Instagram @sim.play.art</a>
+<a href="https://t.me/simplayart" rel="me noopener" target="_blank">Telegram @simplayart</a>
+<a href="https://vk.ru/simplayart" rel="me noopener" target="_blank">ВКонтакте</a>
+<a href="https://sample-art.com/authors/olga-simonova" rel="noopener" target="_blank">Галерея SAMPLE</a></div></div>
+<div class="foot-col"><h4>Проекты</h4><ul><li><a href="../works/play/">PLAY</a></li><li><a href="../works/oblaka/">Облака</a></li><li><a href="../works/shariki/">«А можно забрать его домой?»</a></li><li><a href="../works/plody/">Плоды</a></li><li><a href="../works/igrushki/">Игрушки</a></li></ul></div>
+<div class="foot-col"><h4>Сайт</h4><ul>
+<li><a href="../about/">Обо мне и CV</a></li>
+<li><a href="../#play-video">Видео: сборка и разборка</a></li>
+<li><a href="../#faq">Вопросы и ответы</a></li>
+<li><a href="../play/">Поиграть: 3D-конструктор</a></li>
+<li><a href="../en/">English</a></li></ul></div>
+</div>
+<div class="copy"><span>© 2026 Ольга Симонова · sim.play.art</span><span>Обновлено: 2026-11-06</span></div>
+</div></footer>
+<script src="../assets/main.js?v=42f1c2f8" defer></script>
+<script type="module" src="../assets/play/app.js?v=5aecb539"></script>
+</body>
+</html>

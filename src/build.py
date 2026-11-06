@@ -58,11 +58,11 @@ def breadcrumbs(items):
 FAV = "data:image/svg+xml," + "%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='7' cy='16' r='5' fill='%233B55C9'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23E27896'/%3E%3Ccircle cx='25' cy='16' r='5' fill='%23BFD86A'/%3E%3C/svg%3E"
 
 NAV_RU = [("#projects", "Проекты", "projects"), ("#play-video", "Собери · Разбери", "video"), ("about/", "Обо мне", "about"),
-          ("about/#cv", "Выставки", "cv"), ("#buy", "Где купить", "buy")]
+          ("about/#cv", "Выставки", "cv"), ("#buy", "Где купить", "buy"), ("play/", "Поиграть", "play")]
 
 def header(R, lang, active):
     if lang == "en":
-        nav = f'<a href="{R}en/#about">About</a><a href="{R}en/#play">PLAY</a><a href="{R}en/#cv">Exhibitions</a><a href="{R}en/#contact">Contact</a><a class="lang" href="{R}" hreflang="ru" lang="ru">RU</a>'
+        nav = f'<a href="{R}en/#about">About</a><a href="{R}en/#play">PLAY</a><a href="{R}en/#cv">Exhibitions</a><a href="{R}en/#contact">Contact</a><a href="{R}play/">Play</a><a class="lang" href="{R}" hreflang="ru" lang="ru">RU</a>'
         home = f"{R}en/"
     else:
         items = []
@@ -97,12 +97,13 @@ def footer(R, lang="ru"):
 <li><a href="{R}about/">{"About (RU)" if lang=="en" else "Обо мне и CV"}</a></li>
 <li><a href="{R}#play-video">{"Assembly videos" if lang=="en" else "Видео: сборка и разборка"}</a></li>
 <li><a href="{R}#faq">{"FAQ (RU)" if lang=="en" else "Вопросы и ответы"}</a></li>
+<li><a href="{R}play/">{"3D builder (RU)" if lang=="en" else "Поиграть: 3D-конструктор"}</a></li>
 <li><a href="{R}en/">English</a></li></ul></div>
 </div>
 <div class="copy"><span>© {UPDATED[:4]} {NAME if lang!="en" else NAME_EN} · sim.play.art</span><span>{"Updated" if lang=="en" else "Обновлено"}: {UPDATED}</span></div>
 </div></footer>'''
 
-def page(path, title, desc, body, lang="ru", schema=(), active=None, og="og-olga-simonova.jpg", images=()):
+def page(path, title, desc, body, lang="ru", schema=(), active=None, og="og-olga-simonova.jpg", images=(), head_extra="", scripts=""):
     depth = path.count("/")
     R = "../" * depth
     url = SITE_URL + "/" + path
@@ -134,7 +135,7 @@ def page(path, title, desc, body, lang="ru", schema=(), active=None, og="og-olga
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Unbounded:wght@300;400;500&display=swap&subset=cyrillic" rel="stylesheet">
 <link rel="stylesheet" href="{R}assets/style.css?v={ver("style.css")}">
-{ld(graph)}
+{head_extra}{ld(graph)}
 </head>
 <body>
 {header(R, lang, active)}
@@ -142,7 +143,7 @@ def page(path, title, desc, body, lang="ru", schema=(), active=None, og="og-olga
 {body(R)}
 </main>
 {footer(R, lang)}
-<script src="{R}assets/main.js?v={ver("main.js")}" defer></script>
+<script src="{R}assets/main.js?v={ver("main.js")}" defer></script>{scripts}
 </body>
 </html>'''
     d = os.path.join(OUT, path)
@@ -395,6 +396,57 @@ def build_en():
          "Olga Simonova (sim.play.art) is a ceramic artist from Saint Petersburg creating modular ceramic objects held together by magnets. PLAY project, exhibitions, contacts.",
          body, lang="en", schema=[p, {"@type": "ProfilePage", "url": SITE_URL + "/en/", "mainEntity": {"@id": PERSON_ID}, "inLanguage": "en", "dateModified": UPDATED}], images=imgs)
 
+# ---------------- конструктор ----------------
+def build_play():
+    app = open(os.path.join(SRC, "play", "app.html"), encoding="utf-8").read()
+    def body(R):
+        return app + f'''
+<section class="pa-about"><div class="wrap">
+<div class="pa-about-grid">
+<div>
+<p class="eyebrow">Поиграть</p>
+<h1>3D-конструктор PLAY</h1>
+<p class="lead">Соберите свою пирамиду из деталей, придуманных по мотивам работ Ольги Симоновой (sim.play.art): воздушные шарики, груша, яблоко и огрызок, облако, лестница, волна, корона, геометрические фигуры и основания.</p>
+<h2 style="font-size:1.5rem">Зачем этот конструктор</h2>
+<p>В практике Ольги игра — не тема, а метод. Пирамиды PLAY собираются на магнитах: элементы можно соединять, вращать и менять местами, и зритель становится соавтором работы. Конструктор продолжает этот принцип в цифровом виде: правила простые, а вариаций — бесконечно много.</p>
+<p>Здесь можно сделать то, чего нельзя с керамикой: поставить детали друг в друга, сменить глазурь одним касанием, собрать пирамиду высотой в метр. Это игра по мотивам работ, а не копии конкретных объектов. Настоящие пирамиды PLAY — <a href="{R}works/play/">на странице проекта</a>, купить их можно в галерее SAMPLE или напрямую у художницы.</p>
+</div>
+<div>
+<h2 style="font-size:1.5rem">Как сохранить</h2>
+<ol>
+<li><b>Видео для Reels 9:16</b> или <b>квадратное 1:1</b> — оборот вокруг оси и финальная карточка, MP4 в Safari и свежем Chrome.</li>
+<li><b>3D-модель .glb</b> — вместе с подиумом; открывается в Blender, «Средстве 3D-просмотра» Windows, на Sketchfab.</li>
+<li><b>Картинка .png</b> — снимок сцены как на экране.</li>
+<li><b>Ссылка на сборку</b> — пирамида хранится прямо в адресе, ей можно поделиться.</li>
+</ol>
+<p class="muted">Выложили свою сборку? Отметьте @sim.play.art — Ольге будет интересно посмотреть.</p>
+</div>
+</div>
+<div class="pa-rules" id="rules">
+<h2>Правила использования</h2>
+<ul>
+<li>Формы деталей созданы по мотивам работ Ольги Симоновой (sim.play.art). Права на них остаются у художницы.</li>
+<li>Свои сборки можно свободно публиковать в соцсетях и блогах — с отметкой @sim.play.art или ссылкой на simplayart.ru/play.</li>
+<li>Знак sim.play.art на деталях, подиуме, видео и картинках — часть сборки, пожалуйста, не удаляйте его.</li>
+<li>Коммерческое использование — продажа, печать на 3D-принтере на продажу, использование в рекламе и чужих продуктах — только с письменного согласия художницы. Написать: <a href="{LINKS["telegram"]}" rel="noopener" target="_blank">Telegram</a> или <a href="{LINKS["instagram"]}" rel="noopener" target="_blank">Instagram</a>.</li>
+<li>Конструктор работает целиком в вашем браузере: сборки никуда не отправляются и не хранятся на сервере.</li>
+</ul>
+</div>
+</div></section>'''
+    head = (f'<link rel="stylesheet" href="../assets/play/play.css?v={ver("play/play.css")}">'
+            f'<link rel="modulepreload" href="../assets/play/three/three.module.min.js">\n')
+    play_ver = hashlib.md5("".join(ver("play/" + f) for f in ("app.js", "shapes.js", "materials.js", "brand.js", "three/sim-font.json")).encode()).hexdigest()[:8]
+    scripts = f'\n<script type="module" src="../assets/play/app.js?v={play_ver}"></script>'
+    app_ld = {"@type": "WebApplication", "@id": SITE_URL + "/play/#app", "name": "3D-конструктор PLAY",
+              "url": SITE_URL + "/play/", "applicationCategory": "GameApplication", "operatingSystem": "Любая, в браузере",
+              "inLanguage": "ru", "isAccessibleForFree": True, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "RUB"},
+              "description": "Браузерный 3D-конструктор по мотивам керамических пирамид PLAY художницы Ольги Симоновой (sim.play.art): детали, фактуры, принты, экспорт видео и 3D-модели.",
+              "creator": {"@id": PERSON_ID}, "isBasedOn": {"@type": "CreativeWork", "name": "PLAY", "url": SITE_URL + "/works/play/", "creator": {"@id": PERSON_ID}}}
+    page("play/", "3D-конструктор PLAY — соберите свою пирамиду · sim.play.art",
+         "Поиграйте в 3D-конструктор по мотивам керамических пирамид PLAY Ольги Симоновой (sim.play.art): шарики, фрукты, геометрия, фактуры и принты. Сохраните видео для Reels и 3D-модель.",
+         body, schema=[app_ld, breadcrumbs([("Главная", ""), ("3D-конструктор PLAY", "play/")])], active="play",
+         head_extra=head, scripts=scripts)
+
 # ---------------- service files ----------------
 def build_service():
     open(os.path.join(OUT, ".nojekyll"), "w").write("")
@@ -437,6 +489,7 @@ def build_service():
 ## Страницы
 - [Главная]({SITE_URL}/): кто такая Ольга Симонова, метод, видео сборки, проекты, FAQ
 - [Обо мне и CV]({SITE_URL}/about/): биография, artist statement, образование, выставки, награды
+- [Поиграть: 3D-конструктор PLAY]({SITE_URL}/play/): соберите свою пирамиду из деталей по мотивам работ Ольги — шарики, фрукты, геометрия; фактуры, принты, видео вращения и 3D-модель
 """ + "".join(f"- [{s['title']}]({SITE_URL}/works/{s['slug']}/): {s['short']}\n" for s in SERIES) + f"- [English]({SITE_URL}/en/): bio and statement in English\n"
     open(os.path.join(OUT, "llms.txt"), "w", encoding="utf-8").write(llms)
     nf = f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Страница не найдена · sim.play.art</title><meta name="robots" content="noindex"><link rel="stylesheet" href="{SITE_URL}/assets/style.css"></head>
@@ -464,7 +517,17 @@ if __name__ == "__main__":
     os.makedirs(os.path.join(OUT, "assets"), exist_ok=True)
     for f in ("style.css", "main.js"):
         shutil.copy(os.path.join(SRC, f), os.path.join(OUT, "assets", f))
-    build_index(); build_about(); build_en()
+    play_out = os.path.join(OUT, "assets", "play")
+    if os.path.exists(play_out): shutil.rmtree(play_out)
+    shutil.copytree(os.path.join(SRC, "play"), play_out, ignore=shutil.ignore_patterns("app.html"))
+    # версии модулей в импортах: после обновления браузер не смешает старые и новые файлы
+    mods = {f: ver("play/" + f) for f in ("shapes.js", "materials.js", "brand.js")}
+    for f in ("app.js", "shapes.js", "materials.js", "brand.js"):
+        fp = os.path.join(play_out, f); t = open(fp, encoding="utf-8").read()
+        for m, h in mods.items(): t = t.replace(f"'./{m}'", f"'./{m}?v={h}'")
+        t = t.replace("'./three/sim-font.json'", f"'./three/sim-font.json?v={ver('play/three/sim-font.json')}'")
+        open(fp, "w", encoding="utf-8").write(t)
+    build_index(); build_about(); build_en(); build_play()
     for s in SERIES: build_series(s)
     build_service()
     build_root()

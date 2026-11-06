@@ -1,0 +1,116 @@
+/* Конструктор PLAY — в палитре сайта */
+.pa [hidden],.pa-dlg [hidden]{display:none!important}
+.pa{display:grid;grid-template-columns:240px minmax(0,1fr) 320px;height:calc(100vh - 68px);height:calc(100dvh - 68px);min-height:600px;border-top:1px solid var(--line);background:var(--milk)}
+.pa button{font:inherit;color:inherit;cursor:pointer}
+.pa h3{font:600 .74rem/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--ink-2);margin:18px 0 10px}
+.pa-left,.pa-right{overflow-y:auto;overscroll-behavior:contain;padding:16px;background:var(--paper)}
+.pa-left{border-right:1px solid var(--line)}
+.pa-right{border-left:1px solid var(--line);padding-bottom:40px}
+
+/* библиотека деталей */
+.pa-cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.pa-cats button{border:1px solid var(--line);background:var(--milk);border-radius:999px;padding:7px 12px;font-size:.86rem;font-weight:600}
+.pa-cats button.on{background:var(--ink);border-color:var(--ink);color:var(--milk)}
+.pa-lib{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pa-piece{display:flex;flex-direction:column;align-items:center;gap:2px;border:1px solid var(--line);background:var(--milk);border-radius:var(--radius-s);padding:6px 4px 9px;transition:transform .15s,border-color .15s,background .15s}
+.pa-piece:hover{transform:translateY(-2px);border-color:var(--cobalt);background:var(--lilac)}
+.pa-piece img{width:84px;height:84px}
+.pa-piece span{font-size:.8rem;line-height:1.2;text-align:center}
+.pa-magnet{display:flex;gap:8px;align-items:center;margin-top:16px;font-weight:600;font-size:.9rem}
+.pa-magnet input{width:18px;height:18px;accent-color:var(--cobalt)}
+.pa-tip{font-size:.8rem;color:var(--ink-2);margin:4px 0 0}
+
+/* сцена */
+.pa-stage{position:relative;min-width:0;overflow:hidden;background:var(--milk)}
+.pa-stage canvas{display:block;width:100%;height:100%;touch-action:none;outline:none}
+.pa-tools{position:absolute;top:12px;left:12px;right:12px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.pa-tools button{pointer-events:auto;border:1px solid var(--line);background:rgba(255,255,255,.88);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-radius:999px;padding:8px 14px;font-size:.88rem;font-weight:600;min-width:38px}
+.pa-tools button:hover:not(:disabled){border-color:var(--cobalt);color:var(--cobalt)}
+.pa-tools button:disabled{opacity:.4;cursor:default}
+#paRandom{background:var(--ink);color:var(--milk);border-color:var(--ink)}
+#paRandom:hover{background:var(--cobalt);color:#fff}
+.pa-hint{position:absolute;left:0;right:0;bottom:10px;text-align:center;font-size:.8rem;color:var(--ink-2);margin:0;pointer-events:none;padding:0 12px}
+.pa-rec{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:12px;background:rgba(251,248,245,.94);z-index:5}
+.pa-rec p{font:400 1.2rem/1.2 var(--f-head);margin:0}
+.pa-rec progress{width:240px;accent-color:var(--cobalt)}
+.pa-toast{position:absolute;left:50%;bottom:44px;transform:translateX(-50%);background:var(--ink);color:var(--milk);padding:10px 18px;border-radius:999px;font-size:.9rem;font-weight:600;z-index:6;white-space:nowrap;max-width:92%;overflow:hidden;text-overflow:ellipsis}
+.pa-nojs{position:absolute;inset:0;display:grid;place-items:center;padding:24px;text-align:center}
+
+.pa-go{position:absolute;right:12px;bottom:12px;z-index:4;border:0;background:var(--cobalt);color:#fff;border-radius:999px;padding:10px 16px;font-weight:700;font-size:.88rem;box-shadow:0 6px 18px rgba(59,85,201,.3)}
+@media(min-width:900px){.pa-go{display:none}}
+
+/* правая панель */
+.pa-box+.pa-box{margin-top:6px;border-top:1px solid var(--line);padding-top:4px}
+.pa-box h3:first-child{margin-top:4px}
+#paEmpty p{font-size:.92rem;margin:0}
+.pa-selhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:-4px}
+.pa-selhead b{font:500 1.05rem/1.2 var(--f-head)}
+.pa-selhead span{display:flex;gap:6px}
+.pa-selhead button,.pa-snaps button,.pa-mode button,.pa-chip,.pa-exp button{border:1px solid var(--line);background:var(--milk);border-radius:999px;padding:7px 12px;font-size:.84rem;font-weight:600;transition:border-color .15s,background .15s}
+.pa-selhead button:hover,.pa-snaps button:hover,.pa-mode button:hover,.pa-chip:hover,.pa-exp button:hover{border-color:var(--cobalt)}
+#paDel:hover{border-color:var(--rose);color:#B3123E}
+.pa-snaps{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pa-mode{display:flex;gap:6px;margin-top:8px}
+.pa-mode button{flex:1;font-size:.78rem;padding:6px 8px}
+.pa-mode button.on,.pa-chip.on{background:var(--cobalt-soft);border-color:var(--cobalt)}
+.pa-sliders{display:grid;gap:4px;margin-top:10px}
+.pa-sl{display:grid;grid-template-columns:1fr auto;align-items:center;font-size:.84rem;column-gap:8px}
+.pa-sl output{font-variant-numeric:tabular-nums;color:var(--ink-2);font-size:.8rem}
+.pa-sl input{grid-column:1/-1;width:100%;accent-color:var(--cobalt);margin:2px 0 6px;height:22px}
+.pa-chips{display:flex;flex-wrap:wrap;gap:6px}
+.pa-prints{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.pa-print{display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;padding:0;font-size:.66rem;line-height:1.15;text-align:center}
+.pa-print canvas{width:100%;aspect-ratio:1;border-radius:12px;border:2px solid var(--line)}
+.pa-print.on canvas{border-color:var(--cobalt);box-shadow:0 0 0 2px var(--cobalt-soft)}
+.pa-sws{display:grid;grid-template-columns:repeat(8,1fr);gap:6px}
+.pa-sw{aspect-ratio:1;border-radius:50%;border:1px solid rgba(42,40,51,.15);padding:0;position:relative}
+.pa-sw.on{box-shadow:0 0 0 2px var(--paper),0 0 0 4px var(--cobalt)}
+.pa-sw-custom{background:conic-gradient(#E2382F,#FFE27A,#9BC94A,#7FD3CF,#3B55C9,#A99BE0,#E98AA8,#E2382F);cursor:pointer;display:block;overflow:hidden}
+.pa-sw-custom input{opacity:0;position:absolute;inset:0;width:100%;height:100%;cursor:pointer}
+#paC2Box.dim{opacity:.45}
+.pa-exp{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.pa-exp .pa-main{grid-column:1/-1;background:var(--ink);color:var(--milk);border-color:var(--ink);padding:10px 12px}
+.pa-exp .pa-main:hover{background:var(--cobalt);border-color:var(--cobalt)}
+.pa-layers{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.pa-layers li{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;cursor:pointer;font-size:.9rem}
+.pa-layers li:hover{background:var(--milk)}
+.pa-layers li.on{background:var(--lilac);font-weight:600}
+.pa-layers i{width:14px;height:14px;border-radius:50%;border:1px solid rgba(42,40,51,.2);flex:none}
+
+.pa-note{font-size:.78rem;color:var(--ink-2);margin:10px 0 0;line-height:1.45}
+.pa-note a{color:var(--cobalt)}
+
+/* диалог с видео */
+.pa-dlg{border:0;border-radius:var(--radius);padding:20px;max-width:min(92vw,520px);background:var(--paper);color:var(--ink)}
+.pa-dlg::backdrop{background:rgba(42,40,51,.45)}
+.pa-dlg video{width:100%;max-height:62vh;border-radius:var(--radius-s);background:var(--milk)}
+.pa-dlg p{font-size:.9rem;margin:12px 0}
+.pa-dlg-btns{display:flex;flex-wrap:wrap;gap:10px}
+.pa-dlg .btn{padding:11px 20px;font:inherit;font-weight:600;cursor:pointer}
+
+/* текст под конструктором */
+.pa-about{padding:56px 0 72px}
+.pa-about-grid{display:grid;gap:32px}
+@media(min-width:900px){.pa-about-grid{grid-template-columns:1.2fr 1fr;gap:56px}}
+.pa-about ol{padding-left:1.2em;margin:0}
+.pa-about li{margin-bottom:.5em}
+.pa-rules{margin-top:40px;background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:28px}
+.pa-rules h2{font-size:1.5rem}
+.pa-rules ul{margin:0;padding-left:1.2em}
+.pa-rules li{margin-bottom:.45em}
+
+/* планшет и телефон */
+@media(max-width:1100px){.pa{grid-template-columns:210px minmax(0,1fr) 290px}.pa-piece img{width:72px;height:72px}}
+@media(max-width:899px){
+  .pa{display:flex;flex-direction:column;height:auto;min-height:0}
+  .pa-stage{order:1;height:62vh;height:62svh;min-height:360px;flex:none}
+  .pa-left{order:2;border:0;border-top:1px solid var(--line);overflow:visible}
+  .pa-right{order:3;border:0;border-top:1px solid var(--line);overflow:visible}
+  .pa-lib{display:flex;overflow-x:auto;gap:8px;padding-bottom:6px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+  .pa-piece{flex:0 0 96px;scroll-snap-align:start}
+  .pa-piece img{width:72px;height:72px}
+  .pa-tools button{padding:7px 11px;font-size:.8rem}
+  #paDemo{display:none}
+  .pa-hint{display:none}
+  .pa-sws{grid-template-columns:repeat(8,1fr)}
+}
