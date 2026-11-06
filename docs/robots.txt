@@ -1,0 +1,45 @@
+# robots.txt — nsimonov-design.github.io/simplayart
+# Цель: максимум видимости в AI-поиске и классическом поиске.
+
+User-agent: *
+Allow: /
+
+# --- AI-поиск и ответы на запросы пользователей (разрешаем: это даёт цитирование) ---
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Perplexity-User
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: Claude-User
+Allow: /
+User-agent: Applebot
+Allow: /
+
+# --- Классические поисковики (база для Google AI Overviews, Bing/Copilot, Яндекс Нейро/Алиса) ---
+User-agent: Googlebot
+Allow: /
+User-agent: Bingbot
+Allow: /
+User-agent: YandexBot
+Allow: /
+User-agent: YandexImages
+Allow: /
+
+# --- Обучающие краулеры: РЕШЕНИЕ ОЛЬГИ (см. 04_tech/TECH_CHECKLIST.md, п. «Политика обучения») ---
+# По умолчанию разрешено: модель «знает» художницу даже без поиска.
+# Если Ольга против обучения на её изображениях — заменить Allow на Disallow.
+User-agent: GPTBot
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Applebot-Extended
+Allow: /
+
+Sitemap: https://nsimonov-design.github.io/simplayart/sitemap.xml
