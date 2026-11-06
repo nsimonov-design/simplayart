@@ -4,6 +4,11 @@
 SITE_URL = "https://nsimonov-design.github.io/simplayart"   # при покупке домена — заменить
 UPDATED = "2026-11-06"
 
+# Коды подтверждения (только значение content="…")
+GOOGLE_VERIFY = ""
+YANDEX_VERIFY = ""
+ROOT_URL = "https://nsimonov-design.github.io"   # корень домена: robots.txt, llms.txt, подтверждение Яндекса
+
 NAME = "Ольга Симонова"
 NAME_EN = "Olga Simonova"
 NICK = "sim.play.art"

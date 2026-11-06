@@ -120,7 +120,7 @@ def page(path, title, desc, body, lang="ru", schema=(), active=None, og="og-olga
 <meta name="description" content="{e(desc)}">
 <link rel="canonical" href="{url}">
 {hreflang}
-<meta name="author" content="{NAME}">
+<meta name="author" content="{NAME}">{verify_tags()}
 <meta property="og:type" content="{"profile" if path in ("", "about/", "en/") else "website"}">
 <meta property="og:site_name" content="sim.play.art — {NAME}">
 <meta property="og:title" content="{e(title)}">
@@ -149,6 +149,12 @@ def page(path, title, desc, body, lang="ru", schema=(), active=None, og="og-olga
     os.makedirs(d, exist_ok=True)
     open(os.path.join(d, "index.html"), "w", encoding="utf-8").write(doc)
     SITEMAP.append((path, list(images)))
+
+def verify_tags():
+    t = ""
+    if GOOGLE_VERIFY: t += f'\n<meta name="google-site-verification" content="{GOOGLE_VERIFY}">'
+    if YANDEX_VERIFY: t += f'\n<meta name="yandex-verification" content="{YANDEX_VERIFY}">'
+    return t
 
 # ---------------- blocks ----------------
 def video_block(R, heading=True):
@@ -431,6 +437,23 @@ def build_service():
 <body><main class="wrap" style="min-height:80vh;display:grid;place-items:center;text-align:center"><div><p class="eyebrow">404</p><h1>Эта деталь потерялась</h1><p class="lead">Похоже, магнит не сработал. Вернитесь на главную и соберите заново.</p><div class="btns" style="justify-content:center"><a class="btn btn-fill" href="{SITE_URL}/">На главную</a></div></div></main></body></html>'''
     open(os.path.join(OUT, "404.html"), "w", encoding="utf-8").write(nf)
 
+def build_root():
+    """Репозиторий nsimonov-design.github.io: корень домена — переадресация, robots.txt, llms.txt, подтверждение Яндекса."""
+    root = os.path.join(SRC, "..", "..", "site-root")
+    os.makedirs(root, exist_ok=True)
+    open(os.path.join(root, ".nojekyll"), "w").write("")
+    shutil.copy(os.path.join(OUT, "robots.txt"), os.path.join(root, "robots.txt"))
+    shutil.copy(os.path.join(OUT, "llms.txt"), os.path.join(root, "llms.txt"))
+    target = SITE_URL + "/"
+    open(os.path.join(root, "index.html"), "w", encoding="utf-8").write(f'''<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{NAME} (sim.play.art) — художница-керамист</title>
+<meta name="description" content="{e(BIO_SHORT)}">
+<link rel="canonical" href="{target}">{verify_tags()}
+<script>location.replace("{target}")</script>
+<style>body{{font:17px/1.6 system-ui,sans-serif;background:#FBF8F5;color:#2A2833;display:grid;place-items:center;min-height:90vh;margin:0;padding:16px;text-align:center}}a{{color:#3B55C9}}</style>
+</head><body><p>{NAME} (sim.play.art) — художница-керамист из Санкт-Петербурга.<br><a href="{target}">Перейти на сайт →</a></p></body></html>''')
+
 if __name__ == "__main__":
     os.makedirs(os.path.join(OUT, "assets"), exist_ok=True)
     for f in ("style.css", "main.js"):
@@ -438,4 +461,5 @@ if __name__ == "__main__":
     build_index(); build_about(); build_en()
     for s in SERIES: build_series(s)
     build_service()
+    build_root()
     print("built", len(SITEMAP), "pages →", os.path.abspath(OUT))
