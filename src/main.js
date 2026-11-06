@@ -11,6 +11,24 @@
 
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Телефон: Telegram и Instagram открываем сразу в приложении — в браузере Instagram в РФ без VPN
+  // не открывается, а t.me у части провайдеров работает с перебоями. Нет приложения — через 1,5 с откроется сайт.
+  if(/Android|iPhone|iPad|iPod/i.test(navigator.userAgent)){
+    document.addEventListener('click',function(e){
+      var a=e.target.closest&&e.target.closest('a[href]');if(!a||e.defaultPrevented)return;
+      var h=a.href,m,app=null;
+      if((m=h.match(/^https:\/\/t\.me\/(\w+)\/?$/)))app='tg://resolve?domain='+m[1];
+      else if((m=h.match(/^https:\/\/(?:www\.)?instagram\.com\/([\w.]+)\/?$/)))app='instagram://user?username='+m[1];
+      if(!app)return;
+      e.preventDefault();
+      var gone=false,t=setTimeout(function(){if(!gone&&!document.hidden)location.href=h},1500);
+      var stop=function(){if(document.hidden){gone=true;clearTimeout(t)}};
+      document.addEventListener('visibilitychange',stop);
+      window.addEventListener('pagehide',function(){gone=true;clearTimeout(t)},{once:true});
+      location.href=app;
+    });
+  }
+
   // reveal on scroll
   if('IntersectionObserver' in window && !reduce){
     var ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');ro.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
