@@ -403,7 +403,7 @@ def build_service():
     if host.endswith("github.io"):
         if os.path.exists(cname): os.remove(cname)
     else:
-        open(cname, "w").write(host + "\n")
+        open(cname, "w").write(host)
     urls = []
     for path, ims in SITEMAP:
         seen, im_xml = set(), ""
