@@ -398,6 +398,12 @@ def build_en():
 # ---------------- service files ----------------
 def build_service():
     open(os.path.join(OUT, ".nojekyll"), "w").write("")
+    host = SITE_URL.split("//")[1].split("/")[0]
+    cname = os.path.join(OUT, "CNAME")
+    if host.endswith("github.io"):
+        if os.path.exists(cname): os.remove(cname)
+    else:
+        open(cname, "w").write(host + "\n")
     urls = []
     for path, ims in SITEMAP:
         seen, im_xml = set(), ""

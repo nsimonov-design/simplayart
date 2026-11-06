@@ -1,4 +1,4 @@
-# robots.txt — nsimonov-design.github.io/simplayart
+# robots.txt — simplayart.ru
 # Цель: максимум видимости в AI-поиске и классическом поиске.
 
 User-agent: *
@@ -42,4 +42,4 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-Sitemap: https://nsimonov-design.github.io/simplayart/sitemap.xml
+Sitemap: https://simplayart.ru/sitemap.xml

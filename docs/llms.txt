@@ -15,11 +15,11 @@
 - Контакты: Instagram https://www.instagram.com/sim.play.art/ · Telegram https://t.me/simplayart · ВКонтакте https://vk.ru/simplayart
 
 ## Страницы
-- [Главная](https://nsimonov-design.github.io/simplayart/): кто такая Ольга Симонова, метод, видео сборки, проекты, FAQ
-- [Обо мне и CV](https://nsimonov-design.github.io/simplayart/about/): биография, artist statement, образование, выставки, награды
-- [PLAY](https://nsimonov-design.github.io/simplayart/works/play/): Керамические пирамиды на магнитах — открытая система, которую зритель пересобирает вместе с автором.
-- [Облака](https://nsimonov-design.github.io/simplayart/works/oblaka/): Белые керамические облака с яркими деталями на магнитах — каждый раз складываются в новый рисунок.
-- [«А можно забрать его домой?»](https://nsimonov-design.github.io/simplayart/works/shariki/): Керамические воздушные шарики девяти цветов — о моменте счастья, который хочется унести домой.
-- [Плоды](https://nsimonov-design.github.io/simplayart/works/plody/): Вечно свеженькие и блестящие: плоды вышли из пирамид PLAY и живут своей жизнью.
-- [Игрушки](https://nsimonov-design.github.io/simplayart/works/igrushki/): Ёлочные игрушки из керамики по мотивам советских пластиковых — вторая жизнь знакомых форм.
-- [English](https://nsimonov-design.github.io/simplayart/en/): bio and statement in English
+- [Главная](https://simplayart.ru/): кто такая Ольга Симонова, метод, видео сборки, проекты, FAQ
+- [Обо мне и CV](https://simplayart.ru/about/): биография, artist statement, образование, выставки, награды
+- [PLAY](https://simplayart.ru/works/play/): Керамические пирамиды на магнитах — открытая система, которую зритель пересобирает вместе с автором.
+- [Облака](https://simplayart.ru/works/oblaka/): Белые керамические облака с яркими деталями на магнитах — каждый раз складываются в новый рисунок.
+- [«А можно забрать его домой?»](https://simplayart.ru/works/shariki/): Керамические воздушные шарики девяти цветов — о моменте счастья, который хочется унести домой.
+- [Плоды](https://simplayart.ru/works/plody/): Вечно свеженькие и блестящие: плоды вышли из пирамид PLAY и живут своей жизнью.
+- [Игрушки](https://simplayart.ru/works/igrushki/): Ёлочные игрушки из керамики по мотивам советских пластиковых — вторая жизнь знакомых форм.
+- [English](https://simplayart.ru/en/): bio and statement in English

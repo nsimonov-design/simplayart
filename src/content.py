@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Все тексты и факты сайта. Источник: 02_entity/CANONICAL_FACTS.md. Меняем факт → здесь → python3 site/src/build.py"""
 
-SITE_URL = "https://nsimonov-design.github.io/simplayart"   # при покупке домена — заменить
+SITE_URL = "https://simplayart.ru"   # свой домен (reg.ru); GitHub Pages: репо nsimonov-design/simplayart, файл docs/CNAME
 UPDATED = "2026-11-06"
 
 # Коды подтверждения (только значение content="…")
