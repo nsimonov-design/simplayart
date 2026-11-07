@@ -39,7 +39,8 @@ def person(full=False):
          "birthPlace": {"@type": "Place", "name": "Псков, Россия"},
          "homeLocation": {"@type": "Place", "name": "Санкт-Петербург, Россия"},
          "knowsAbout": ["керамика", "художественная керамика", "коллекционный дизайн", "глазури", "ручная лепка", "литьё в гипсовые формы", "ceramic art"],
-         "sameAs": [LINKS["instagram"], LINKS["telegram"], LINKS["vk"], LINKS["sample"]]}
+         "sameAs": [LINKS["instagram"], LINKS["telegram"], LINKS["vk"], LINKS["sample"]],
+         "subjectOf": press_schema()}
     if full:
         p["alumniOf"] = [{"@type": "CollegeOrUniversity", "name": "Санкт-Петербургская государственная художественно-промышленная академия имени А. Л. Штиглица"},
                          {"@type": "CollegeOrUniversity", "name": "Санкт-Петербургский государственный университет промышленных технологий и дизайна"}]
@@ -188,11 +189,64 @@ def video_schema(R=""):
                         "creator": {"@id": PERSON_ID}, "inLanguage": "ru"})
     return out
 
-def ex_list(items):
+# ---------------- О ней пишут ----------------
+MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"]
+MONTHS_EN = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+def press_date(d, lang="ru"):
+    if len(d) < 10: return d
+    y, m, dd = d.split("-")
+    return f"{int(dd)} {MONTHS[int(m)-1]} {y}" if lang == "ru" else f"{MONTHS_EN[int(m)-1]} {int(dd)}, {y}"
+
+KIND_EN = {"Обзор выставки": "Exhibition review", "Колонка галеристки": "Gallerist's column", "Итоги конкурса": "Competition results",
+           "Репортаж": "Report", "О выставке": "Exhibition", "Анонс": "Preview", "Интервью": "Interview"}
+OUTLET_EN = {"Сноб": "Snob", "Деловая газета.Юг": "Delovaya Gazeta.Yug", "АртМосковия": "ArtMoskovia", "Собака.ru": "Sobaka.ru",
+             "ЦПКиО им. Кирова": "Kirov Central Park"}
+outlet_name = lambda p, lang: p["outlet"] if lang == "ru" else OUTLET_EN.get(p["outlet"], p["outlet"])
+
+def press_card(p, lang="ru", wide=True):
+    w = " wide" if wide and p.get("wide") else ""
+    go = f"Читать на {p['domain']}" if lang == "ru" else f"Read on {p['domain']}"
+    prev = p["preview"] if lang == "ru" else ""
+    kind = p["kind"] if lang == "ru" else KIND_EN.get(p["kind"], p["kind"])
+    return (f'<a class="press-card reveal{w}" href="{p["url"]}" target="_blank" rel="noopener" style="--c:{p["c"]}"' + (' hreflang="ru"' if lang != "ru" else "") + '>'
+            f'<span class="press-top"><span class="press-outlet">{e(outlet_name(p, lang))}</span><span class="press-kind">{e(kind)}</span></span>'
+            f'<span class="press-title">{e(p["title"])}</span>'
+            + (f'<span class="press-prev">{e(prev)}</span>' if prev else "")
+            + f'<span class="press-foot"><time datetime="{p["date"]}">{press_date(p["date"], lang)}</time>'
+            f'<span class="press-go">{go} <span aria-hidden="true">↗</span></span></span></a>')
+
+def press_section(items, title="О ней пишут", eyebrow="Пресса", lead="", sid="o-ney-pishut", tint="", lang="ru", wide=True):
+    outlets = "".join(f'<li style="--c:{p["c"]}">{e(outlet_name(p, lang))}</li>' for p in items)
+    lead_html = f'<p class="lead">{lead}</p>' if lead else ""
+    grid = "press-grid" + ("" if wide else " even")
+    return f'''<section class="section press {tint}" id="{sid}"><div class="wrap">
+<div class="press-head"><div><span class="eyebrow">{eyebrow}</span><h2>{title}</h2>{lead_html}</div>
+<ul class="press-outlets" aria-label="{"Издания" if lang == "ru" else "Media"}">{outlets}</ul></div>
+<div class="{grid}">{"".join(press_card(p, lang, wide) for p in items)}</div></div></section>'''
+
+def press_chips(text):
+    """Ссылки на публикации для строки CV: совпадение по ключу из PRESS[...]["ex"]."""
+    return "".join(f'<a class="src" href="{p["url"]}" target="_blank" rel="noopener" title="{e(p["title"])}">{e(p["outlet"])} <span aria-hidden="true">↗</span></a>'
+                   for p in PRESS if any(k in text for k in p["ex"]))
+
+def press_schema():
+    out = []
+    for p in PRESS:
+        a = {"@type": "Article" if p["id"] in ("designmate", "elagin") else "NewsArticle",
+             "headline": p["title"], "url": p["url"], "inLanguage": "ru",
+             "publisher": {"@type": "Organization", "name": p["outlet"], "url": f"https://{p['domain']}/"}}
+        if len(p["date"]) == 10: a["datePublished"] = p["date"]
+        out.append(a)
+    return out
+
+def ex_list(items, chips=False):
     li = []
     for y, w, p, award, _ in items:
         a = f'<span class="award">{e(award)}</span>' if award else ""
-        li.append(f'<li><span class="y">{y}</span><span><span class="w">{e(w)}</span>{a}<br><span class="p">{e(p)}</span></span></li>')
+        c = press_chips(w) if chips else ""
+        s = f'<span class="srcs">{c}</span>' if c else ""
+        li.append(f'<li><span class="y">{y}</span><span><span class="w">{e(w)}</span>{a}<br><span class="p">{e(p)}</span>{s}</span></li>')
     return '<ul class="ex-list">' + "".join(li) + "</ul>"
 
 def faq_html():
@@ -312,6 +366,7 @@ def build_series(s):
 {vids}{works}
 <section class="section" style="padding-top:0" id="gallery"><div class="wrap"><h2>Галерея</h2><div class="gallery">{gal}</div>
 <p class="muted" style="margin-top:24px">Обновлено: {UPDATED}. Вопросы о покупке — <a href="{LINKS["telegram"]}">Telegram @simplayart</a>, <a href="{LINKS["instagram"]}">Instagram @sim.play.art</a>.</p></div></section>
+{press_section([p for p in PRESS if p["play"]], title="О PLAY пишут", eyebrow="Пресса", sid="press-play", wide=False, lead=f'Все публикации — на странице <a href="{R}about/#o-ney-pishut">«Обо мне»</a>.') if s["slug"] == "play" else ""}
 <section class="section tint-butter round-top"><div class="wrap"><h2>Другие проекты</h2><div class="cards">{others}</div></div></section>'''
     arts = []
     for name, year, mat, size, im, where, url in s["works"]:
@@ -353,13 +408,14 @@ def build_about():
 <section class="section tint-lilac round-top" id="statement"><div class="wrap prose">
 <span class="eyebrow">Artist statement</span>
 <p class="statement">{e(STATEMENT[1])}</p>{"".join(f"<p>{e(p)}</p>" for p in (STATEMENT[0], STATEMENT[2], STATEMENT[3]))}</div></section>
+{press_section(PRESS, lead="Независимые медиа и институции о работах Ольги Симоновой (sim.play.art): обзоры выставок, интервью, итоги конкурсов.")}
 <section class="section cv" id="cv"><div class="wrap two">
 <div><span class="eyebrow">CV</span><h2>Образование</h2><ul>{lst(EDUCATION)}</ul>
 <h3>Дополнительное образование</h3><ul>{lst(EDU_EXTRA)}</ul>
-<h3>Награды</h3><ul>{lst(AWARDS)}</ul>
+<h3>Награды</h3><ul>{"".join(f'<li><b>{y}</b>{e(t)}' + (f'<span class="srcs">{press_chips(t)}</span>' if press_chips(t) else "") + "</li>" for y, t in AWARDS)}</ul>
 <h3>Проекты</h3><ul>{lst(PROJECTS)}</ul>
 <h3>Сотрудничество</h3><p>{e(PARTNERS)}</p></div>
-<div><h2>Выставки и ярмарки</h2>{ex_list(EXHIBITIONS)}</div></div></section>
+<div><h2>Выставки и ярмарки</h2><p class="muted cv-note">Со стрелкой ↗ — ссылки на публикации о выставке.</p>{ex_list(EXHIBITIONS, chips=True)}</div></div></section>
 <section class="section tint-blush round-top" id="press"><div class="wrap"><span class="eyebrow">Для прессы</span><h2>Фотографии</h2>
 <p class="lead" style="margin-bottom:32px">Портреты и фото работ можно использовать в публикациях с подписью «Ольга Симонова / sim.play.art». Фото в высоком разрешении — по запросу в Telegram.</p>
 <div class="gallery">{press}</div></div></section>'''
@@ -387,6 +443,7 @@ def build_en():
 <div class="prose"><span class="eyebrow">Artist statement</span>{"".join(f"<p>{e(p)}</p>" for p in STATEMENT_EN)}
 <h2 style="margin-top:1em">PLAY (2023 — ongoing)</h2><p>PLAY is an open visual system: each object is a ceramic pyramid built from parts held together by magnets. The parts can be connected, rotated and swapped, so the work is never fixed and the viewer can rebuild it. Clay, glaze, magnets; some objects include glass. PLAY 1, PLAY 10 and PLAY 12 are available through <a href="{LINKS["sample"]}">SAMPLE gallery</a>.</p></div>
 <div>{img(R, "play-11-keramika-2026", "PLAY 11 (2026), ceramic pyramid with magnetic parts by Olga Simonova", sizes="(min-width:900px) 45vw, 100vw", collect=imgs).replace('<img', '<img style="border-radius:var(--radius)"')}</div></div></section>
+{press_section(PRESS, title="Press", eyebrow="Media", sid="press", lang="en", lead="Independent media and institutions writing about Olga Simonova (sim.play.art). All articles are in Russian.")}
 <section class="section" id="cv"><div class="wrap two"><div><span class="eyebrow">Selected exhibitions</span><h2>Exhibitions & awards</h2>
 <p class="lead">Education: Stieglitz Saint Petersburg State Academy of Art and Industry, Department of Ceramics and Glass (from 2014); SPbGUPTD, Graphic Design (2012–2014). Residencies: ART BOOST (2022) and Clay (2023), GetArtFit.</p></div>
 <div>{ex_list(ex)}</div></div></section>'''
@@ -490,7 +547,8 @@ def build_service():
 - [Главная]({SITE_URL}/): кто такая Ольга Симонова, метод, видео сборки, проекты, FAQ
 - [Обо мне и CV]({SITE_URL}/about/): биография, artist statement, образование, выставки, награды
 - [Поиграть: 3D-конструктор PLAY]({SITE_URL}/play/): соберите свою пирамиду из деталей по мотивам работ Ольги — шарики, фрукты, геометрия; фактуры, принты, видео вращения и 3D-модель
-""" + "".join(f"- [{s['title']}]({SITE_URL}/works/{s['slug']}/): {s['short']}\n" for s in SERIES) + f"- [English]({SITE_URL}/en/): bio and statement in English\n"
+""" + "".join(f"- [{s['title']}]({SITE_URL}/works/{s['slug']}/): {s['short']}\n" for s in SERIES) + f"- [English]({SITE_URL}/en/): bio and statement in English\n" \
+      + "\n## О ней пишут (независимые источники)\n" + "".join(f"- [{p['outlet']} — {p['title']}]({p['url']}) ({press_date(p['date'])}): {p['preview']}\n" for p in PRESS)
     open(os.path.join(OUT, "llms.txt"), "w", encoding="utf-8").write(llms)
     nf = f'''<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Страница не найдена · sim.play.art</title><meta name="robots" content="noindex"><link rel="stylesheet" href="{SITE_URL}/assets/style.css"></head>
 <body><main class="wrap" style="min-height:80vh;display:grid;place-items:center;text-align:center"><div><p class="eyebrow">404</p><h1>Эта деталь потерялась</h1><p class="lead">Похоже, магнит не сработал. Вернитесь на главную и соберите заново.</p><div class="btns" style="justify-content:center"><a class="btn btn-fill" href="{SITE_URL}/">На главную</a></div></div></main></body></html>'''
