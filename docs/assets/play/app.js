@@ -6,7 +6,7 @@ import { GLTFExporter } from './three/GLTFExporter.js';
 import { RoomEnvironment } from './three/RoomEnvironment.js';
 import { SHAPES, CATS, geometry, rng } from './shapes.js?v=5a5c0570';
 import { COLORS, TEX, PRINTS, makeMaterial, printCanvas } from './materials.js?v=370f040d';
-import { BRAND, setFont, reliefGeometry, reliefMaterial, stampColor, makeStand, drawPlate, drawEndCard, pngWithMeta, fileMeta } from './brand.js?v=2319d31c';
+import { BRAND, setFont, makeStand, drawPlate, drawEndCard, pngWithMeta, fileMeta } from './brand.js?v=2319d31c';
 
 // Ограничения: сцена и ссылка на сборку не должны вешать браузер
 const MAX_ITEMS = 50, MAX_HASH = 12000;
@@ -86,8 +86,6 @@ function makeItem(spec) {
   const mesh = new THREE.Mesh(geometry(it.t), makeMaterial(it, SHAPES[it.t][2]));
   mesh.name = SHAPES[it.t][0]; mesh.castShadow = mesh.receiveShadow = true; mesh.rotation.order = 'YXZ';
   mesh.userData.id = it.id; it.mesh = mesh;
-  const rg = reliefGeometry(it.t, geometry(it.t));
-  if (rg) { const st = new THREE.Mesh(rg, reliefMaterial(it.a)); st.name = 'Рельеф sim.play.art'; st.castShadow = st.receiveShadow = true; mesh.add(st); it.stamp = st; }
   writeMesh(it); model.add(mesh); items.push(it);
   return it;
 }
@@ -108,9 +106,8 @@ function writeMesh(it) { it.mesh.position.set(...it.p); it.mesh.rotation.set(...
 function readMesh(it) { const m = it.mesh; it.p = m.position.toArray(); it.r = [m.rotation.x, m.rotation.y, m.rotation.z]; it.s = m.scale.x; }
 function refreshMaterial(it) {
   it.mesh.material.dispose(); it.mesh.material = makeMaterial(it, SHAPES[it.t][2]);
-  if (it.stamp) it.stamp.material.color.copy(stampColor(it.a));
 }
-function removeItem(it) { model.remove(it.mesh); it.mesh.material.dispose(); if (it.stamp) it.stamp.material.dispose(); items = items.filter(x => x !== it); }
+function removeItem(it) { model.remove(it.mesh); it.mesh.material.dispose(); items = items.filter(x => x !== it); }
 
 const serialize = () => JSON.stringify(items.map(({ t, p, r, s, m, q, a, b }) => ({ t, p: p.map(r3), r: r.map(r3), s: r3(s), m, q, a, b })));
 function load(str, keepSel) {
@@ -550,4 +547,4 @@ else { camera.position.set(6, 4.4, 8.5); buildStack(DEMO); }
 document.body.classList.add('pa-ready');
 
 renderer.setAnimationLoop(() => { if (recording) return; controls.update(); renderer.render(scene, camera); });
-window.__play = { items: () => items, scene, renderer, camera, controls, relief: reliefGeometry, geometry, SHAPES };
+window.__play = { items: () => items, scene, renderer, camera, controls, geometry, SHAPES };
