@@ -335,7 +335,7 @@ def build_index():
 <div class="section-head reveal"><span class="eyebrow">Где купить</span><h2>Забрать домой</h2>
 <p class="lead">Ольга работает независимо. Часть работ сейчас в галереях — у каждой такой работы на странице проекта есть кнопка галереи. Остальное, заказ и коллаборации — напрямую у художницы.</p></div>
 <div class="buy reveal">
-<a href="{R}works/play/#raboty"><b>Работы в галереях</b><span>PLAY, «Облака», воздушные шарики: где сейчас каждая работа — кнопка рядом с ней</span><span class="arrow">Смотреть работы →</span></a>
+<a href="{R}works/play/#raboty"><b>Работы в галереях</b><span>PLAY и «Облака»: где сейчас каждая работа — кнопка рядом с ней</span><span class="arrow">Смотреть работы →</span></a>
 <a href="{LINKS["telegram"]}" target="_blank" rel="me noopener"><b>Telegram</b><span>Купить работу напрямую, обсудить заказ или коллаборацию</span><span class="arrow">@simplayart →</span></a>
 <a href="{LINKS["vk"]}" target="_blank" rel="me noopener"><b>ВКонтакте</b><span>Сообщество sim.play.art: новости, работы в наличии</span><span class="arrow">vk.ru/simplayart →</span></a>
 </div></div></section>
@@ -559,7 +559,7 @@ def build_service():
 - Мастерская: собственная, с 2019 года, Санкт-Петербург
 - Награды: {"; ".join(f"{t} ({y})" for y, t in AWARDS)}
 - Избранные выставки: {"; ".join(f"{w}, {p} ({y})" for y, w, p, a, h in hi)}
-- Независимая художница. Работы в галереях (что где сейчас — на страницах проектов): SAMPLE — {LINKS["sample"]} · BIZAR — {LINKS["bizar"]}
+- Независимая художница. Профили в галереях: SAMPLE — {LINKS["sample"]} · BIZAR — {LINKS["bizar"]}
 - Контакты: Instagram {LINKS["instagram"]} · Telegram {LINKS["telegram"]} · ВКонтакте {LINKS["vk"]}
 
 ## Страницы

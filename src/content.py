@@ -24,7 +24,7 @@ LINKS = {
 
 # ---------- галереи: где сейчас конкретная работа ----------
 # Ольга — независимая художница, ни одну галерею не выделяем. Кнопка галереи стоит только у работы, которая там сейчас.
-# Проверено по каталогам 07.11.2026. Продали / сняли работу → убрать строку ниже и пересобрать.
+# Кнопки только SAMPLE (BIZAR по решению пользователя 07.11 без кнопок). Проверено по каталогам 07.11.2026. Продали / сняли работу → убрать строку ниже и пересобрать.
 GALLERIES = {
     "sample": dict(name="SAMPLE", mark="S", url="https://sample-art.com/", g="#17171f"),
     "bizar":  dict(name="BIZAR",  mark="B", url="https://bizar.art/", g="linear-gradient(135deg,#4a4fb8,#c45bb0 55%,#f0873a)"),
@@ -34,12 +34,7 @@ IN_GALLERY = {
     "PLAY 10": [("sample", "https://sample-art.com/catalog/Ceramics/olga-simonova/pley-10-6772")],
     "PLAY 12": [("sample", "https://sample-art.com/catalog/Ceramics/olga-simonova/pley-12-6771")],
     "Мерцающее облако": [("sample", "https://sample-art.com/catalog/Ceramics/olga-simonova/mercayushee-oblako-6781")],
-    "Облака на стене «Лучи»": [("sample", "https://sample-art.com/authors/olga-simonova"),
-                               ("bizar", "https://bizar.art/artwork/oblaka-na-stene-a5n3")],
-    "Облако «Червячки»": [("bizar", "https://bizar.art/artwork/oblako-chervyachki-pefn")],
-    "«А можно забрать его домой?» Красный": [("bizar", "https://bizar.art/artwork/a-mozhno-vzyat-ego-s-soboj-36m0")],
-    "«А можно забрать его домой?» Голубой": [("bizar", "https://bizar.art/artwork/a-mozhno-vzyat-ego-s-soboj-res3")],
-    "«А можно забрать его домой?» Серо-голубой": [("bizar", "https://bizar.art/artwork/a-mozhno-vzyat-ego-s-soboj-48a3")],
+    "Облака на стене «Лучи»": [("sample", "https://sample-art.com/authors/olga-simonova")],
 }
 
 BIO_SHORT = ("Ольга Симонова (sim.play.art) — независимая художница-керамист из Санкт-Петербурга. "
@@ -181,7 +176,7 @@ SERIES = [
    answer="«Облака» — серия коллекционных объектов дизайна Ольги Симоновой (sim.play.art) из керамики с магнитами. Белые облака-вазы и облака на стене дополнены небольшими яркими деталями — «каплями», «червячками», «лучами», — которые крепятся на магнитах и при каждом прикосновении складываются в новый рисунок.",
    facts=[("Годы","2024 — 2026"),("Материалы","глина, глазурь, магниты"),("Техника","ручная лепка"),
           ("Размеры","от 8 × 10 см (облака на стене) до 80 × 20 см"),("Форматы","облака-вазы, настенные облака с наборами деталей"),
-          ("Где купить","в галереях SAMPLE и BIZAR (кнопка у работы) или напрямую через Telegram")],
+          ("Где купить","часть работ — в галерее SAMPLE (кнопка у работы), остальные — напрямую через Telegram")],
    idea=["В работе над облаками с магнитами Ольга ищет баланс функциональности и озорства. Воздушная форма оживает благодаря небольшим ярким деталям на магнитах: они составляют новый рисунок каждый раз, когда с ними взаимодействуют. Остаётся только взять облако в руки и начать фантазировать.",
          "В «Облаках на стене» художница приглашает владельца стать соавтором и выбрать свой набор капель. На фото — авторская конфигурация, которую можно менять: помимо базовых капель, в комплекте идут несколько дополнительных."],
    process=[], videos=False,
@@ -202,7 +197,7 @@ SERIES = [
    answer="«А можно забрать его домой?» — серия керамических воздушных шариков Ольги Симоновой (sim.play.art), 2025 год. Шарики выполнены литьём и ручной лепкой из глины и покрыты глазурями девяти цветов: зелёной, оранжевой, голубой, бирюзовой, жёлтой, лиловой, синей, серо-голубой и красной.",
    facts=[("Год","2025"),("Материалы","глина, глазури"),("Техника","литьё, ручная лепка"),("Размер","около 18 × 14 см"),
           ("Цвета","зелёный, оранжевый, голубой, бирюзовый, жёлтый, лиловый, синий, серо-голубой, красный"),
-          ("Где купить","часть шариков — в галерее BIZAR (кнопка у работы), остальные — напрямую через Telegram"),
+          ("Где купить","напрямую через Telegram"),
           ("Продолжение","фотопроект и настенные объекты «Рано или поздно» (2026, в работе)")],
    idea=["Сам по себе воздушный шарик ничего не стоит — ценен момент счастья, когда он появляется в руках. «А можно взять его с собой?» — трепетный вопрос перед обладанием радостью. И вот ты несёшь его в руках — частичку праздника домой.",
          "Продолжение серии — «Рано или поздно»: фотопроект-исследование на ходу, поиск случайных сдутых находок на улицах, и настенные объекты около 80 см, которые сейчас в работе."],
@@ -242,7 +237,7 @@ FAQ = [
     ("Кто такая Ольга Симонова (sim.play.art)?", BIO_SHORT),
     ("Что такое проект PLAY?", "PLAY — проект Ольги Симоновой с 2023 года: керамические «пирамиды», которые собираются из элементов на магнитах. Детали можно соединять, вращать и менять местами, поэтому объект не зафиксирован и зритель может пересобрать его сам."),
     ("Как устроены работы на магнитах?", "Каждая деталь — отдельный керамический элемент, вылепленный вручную или отлитый в гипсовой форме, с вклеенными магнитами. Элементы держатся друг на друге без клея, поэтому композицию можно менять: в «Облаках» — переставлять яркие капли, в PLAY — собирать пирамиду в другом порядке."),
-    ("Где купить работы Ольги Симоновой?", "Ольга — независимая художница. Отдельные работы сейчас представлены в галереях SAMPLE (sample-art.com) и BIZAR (bizar.art): на страницах проектов у каждой такой работы есть кнопка галереи. Напрямую у художницы можно купить работы и обсудить заказ через Telegram @simplayart, Instagram @sim.play.art или сообщество ВКонтакте vk.ru/simplayart."),
+    ("Где купить работы Ольги Симоновой?", "Ольга — независимая художница. Отдельные работы сейчас представлены в галереях: на страницах проектов у каждой такой работы есть кнопка галереи. Напрямую у художницы можно купить работы и обсудить заказ через Telegram @simplayart, Instagram @sim.play.art или сообщество ВКонтакте vk.ru/simplayart."),
     ("Где выставлялись работы?", "В Русском музее («Игры, в которые играют люди», 2026), Cube.Moscow («Играть можно», 2026), Taoxichuan Art Center в Китае (2026), ЦСИ «Быль» (2025), на фестивале «Кабинет редкостей» в Bulthaup Design Gallery (2025), ярмарках Port Art Fair и Third Art Fair в Санкт-Петербурге."),
     ("Сотрудничает ли художница с брендами?", "Да: коллаборация с рестораном ВОВО (сет Signature XV, 2025), проект для фотоателье «UU» (2025), проект «Лёгкий ужин» с Nataliia Leskova (2024). Для предложений — Telegram @simplayart."),
     ("Где училась Ольга Симонова?", "В Санкт-Петербургской государственной художественно-промышленной академии им. А. Л. Штиглица на кафедре художественной керамики и стекла (с 2014 года) и в СПбГУПТД на факультете графического дизайна (2012–2014). С 2019 года работает в собственной мастерской."),
@@ -252,7 +247,7 @@ FAQ = [
 BIO_EN = [
     "Olga Simonova (sim.play.art) is an independent ceramic artist based in Saint Petersburg, Russia. Born in 1994 in Pskov, she creates modular ceramic objects held together by magnets: their parts can be connected, rotated and swapped, so the viewer becomes a co-author of the work.",
     "She studied graphic design at Saint Petersburg State University of Industrial Technologies and Design (2012–2014) and ceramics and glass at the Stieglitz Saint Petersburg State Academy of Art and Industry (from 2014). In 2019 she bought a kiln and set up her own studio.",
-    "Since 2023 she has been developing PLAY — a series of ceramic “pyramids” assembled with magnets. Her work has been shown at the Russian Museum, Cube.Moscow, Taoxichuan Art Center (China), Byl Contemporary Art Centre, Port Art Fair and Third Art Fair. First prize at “Colour Block” (Art Brut Gallery, Moscow, 2023). Her works are available through galleries including SAMPLE and BIZAR.",
+    "Since 2023 she has been developing PLAY — a series of ceramic “pyramids” assembled with magnets. Her work has been shown at the Russian Museum, Cube.Moscow, Taoxichuan Art Center (China), Byl Contemporary Art Centre, Port Art Fair and Third Art Fair. First prize at “Colour Block” (Art Brut Gallery, Moscow, 2023). Her works are available through galleries.",
 ]
 STATEMENT_EN = [
     "In recent years, my practice has focused on ceramics. Working with clay, I create modular constructions with movable and detachable details in which the material, the author and the viewer become co-authors. I explore play not as a theme, but as a method.",
