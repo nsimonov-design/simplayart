@@ -179,13 +179,17 @@ def video_block(R, heading=True):
     return f'''{head}<div class="play-grid">{"".join(cards)}</div>
 <details class="transcript"><summary>Что происходит в видео (текстовое описание)</summary>{trans}</details>'''
 
+def iso_dt(d):
+    """'2026-11-07' -> '2026-11-07T12:00:00+03:00' (Google просит дату-время с часовым поясом)"""
+    return f"{d}T12:00:00+03:00"
+
 def video_schema(R=""):
     out = []
     for v in VIDEOS:
         for mode, word in (("sborka", "сборка"), ("razborka", "разборка")):
             out.append({"@type": "VideoObject", "name": f"{v['title']} — {word} объекта на магнитах · Ольга Симонова",
                         "description": v["text"], "thumbnailUrl": f"{SITE_URL}/img/{v['id']}-poster.webp",
-                        "contentUrl": f"{SITE_URL}/video/{v['id']}-{mode}.mp4", "uploadDate": UPDATED,
+                        "contentUrl": f"{SITE_URL}/video/{v['id']}-{mode}.mp4", "uploadDate": iso_dt(VIDEOS_UPLOADED),
                         "creator": {"@id": PERSON_ID}, "inLanguage": "ru"})
     return out
 
@@ -236,7 +240,7 @@ def press_schema():
         a = {"@type": "Article" if p["id"] in ("designmate", "elagin") else "NewsArticle",
              "headline": p["title"], "url": p["url"], "inLanguage": "ru",
              "publisher": {"@type": "Organization", "name": p["outlet"], "url": f"https://{p['domain']}/"}}
-        if len(p["date"]) == 10: a["datePublished"] = p["date"]
+        if len(p["date"]) == 10: a["datePublished"] = iso_dt(p["date"])
         out.append(a)
     return out
 
@@ -327,7 +331,7 @@ def build_index():
 {img(R, "keramicheskie-lestnitsy-serdtse", "Сердце, выложенное из керамических лестниц Ольги Симоновой", sizes="(min-width:900px) 40vw, 100vw", collect=imgs).replace('<img', '<img style="border-radius:var(--radius);margin-top:24px;max-width:420px;width:100%"')}</div>
 <div class="faq reveal">{faq_html()}</div></div></section>'''
     schema = [person(), {"@type": "ProfilePage", "@id": SITE_URL + "/#page", "url": SITE_URL + "/", "name": f"{NAME} — художница-керамист",
-              "mainEntity": {"@id": PERSON_ID}, "dateModified": UPDATED, "inLanguage": "ru"},
+              "mainEntity": {"@id": PERSON_ID}, "dateModified": iso_dt(UPDATED), "inLanguage": "ru"},
               faq_schema(), *video_schema(),
               {"@type": "ItemList", "name": "Проекты Ольги Симоновой", "itemListElement": [
                   {"@type": "ListItem", "position": i + 1, "url": f"{SITE_URL}/works/{s['slug']}/", "name": s["title"]} for i, s in enumerate(SERIES)]}]
@@ -381,7 +385,7 @@ def build_series(s):
         arts.append(a)
     schema = [person(), breadcrumbs([("Главная", ""), (s["title"], path)]),
               {"@type": "CollectionPage", "@id": SITE_URL + "/" + path + "#page", "url": SITE_URL + "/" + path, "name": s["seo_title"],
-               "description": s["answer"], "author": {"@id": PERSON_ID}, "dateModified": UPDATED, "inLanguage": "ru",
+               "description": s["answer"], "author": {"@id": PERSON_ID}, "dateModified": iso_dt(UPDATED), "inLanguage": "ru",
                "about": {"@type": "CreativeWorkSeries", "name": s["title"], "creator": {"@id": PERSON_ID}},
                **({"hasPart": arts} if arts else {})}]
     if s["videos"]: schema += video_schema()
@@ -421,7 +425,7 @@ def build_about():
 <div class="gallery">{press}</div></div></section>'''
     exevents = [{"@type": "ExhibitionEvent", "name": w, "startDate": y, "location": {"@type": "Place", "name": p}, "performer": {"@id": PERSON_ID}} for y, w, p, a, h in EXHIBITIONS if h]
     schema = [person(full=True), breadcrumbs([("Главная", ""), ("Обо мне", "about/")]),
-              {"@type": "ProfilePage", "url": SITE_URL + "/about/", "name": f"{NAME} — биография и CV", "mainEntity": {"@id": PERSON_ID}, "dateModified": UPDATED}, *exevents]
+              {"@type": "ProfilePage", "url": SITE_URL + "/about/", "name": f"{NAME} — биография и CV", "mainEntity": {"@id": PERSON_ID}, "dateModified": iso_dt(UPDATED)}, *exevents]
     page("about/", f"{NAME} — биография, CV, выставки · sim.play.art",
          "Биография и CV художницы-керамиста Ольги Симоновой (sim.play.art): образование (академия Штиглица), выставки в Русском музее и Cube.Moscow, награды, artist statement.",
          body, schema=schema, active="about", images=imgs)
@@ -451,7 +455,7 @@ def build_en():
                             "homeLocation": {"@type": "Place", "name": "Saint Petersburg, Russia"}})
     page("en/", "Olga Simonova (sim.play.art) — ceramic artist, Saint Petersburg",
          "Olga Simonova (sim.play.art) is a ceramic artist from Saint Petersburg creating modular ceramic objects held together by magnets. PLAY project, exhibitions, contacts.",
-         body, lang="en", schema=[p, {"@type": "ProfilePage", "url": SITE_URL + "/en/", "mainEntity": {"@id": PERSON_ID}, "inLanguage": "en", "dateModified": UPDATED}], images=imgs)
+         body, lang="en", schema=[p, {"@type": "ProfilePage", "url": SITE_URL + "/en/", "mainEntity": {"@id": PERSON_ID}, "inLanguage": "en", "dateModified": iso_dt(UPDATED)}], images=imgs)
 
 # ---------------- конструктор ----------------
 def build_play():

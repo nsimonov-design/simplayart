@@ -2,7 +2,8 @@
 """Все тексты и факты сайта. Источник: 02_entity/CANONICAL_FACTS.md. Меняем факт → здесь → python3 site/src/build.py"""
 
 SITE_URL = "https://simplayart.ru"   # свой домен (reg.ru); GitHub Pages: репо nsimonov-design/simplayart, файл docs/CNAME
-UPDATED = "2026-11-06"
+UPDATED = "2026-11-07"
+VIDEOS_UPLOADED = "2026-11-06"   # дата первой публикации видео — не менять при обновлениях
 
 # Коды подтверждения (только значение content="…")
 GOOGLE_VERIFY = ""
