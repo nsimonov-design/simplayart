@@ -39,13 +39,12 @@ def person(full=False):
          "birthPlace": {"@type": "Place", "name": "Псков, Россия"},
          "homeLocation": {"@type": "Place", "name": "Санкт-Петербург, Россия"},
          "knowsAbout": ["керамика", "художественная керамика", "коллекционный дизайн", "глазури", "ручная лепка", "литьё в гипсовые формы", "ceramic art"],
-         "sameAs": [LINKS["instagram"], LINKS["telegram"], LINKS["vk"], LINKS["sample"]],
+         "sameAs": [LINKS["instagram"], LINKS["telegram"], LINKS["vk"], LINKS["sample"], LINKS["bizar"]],
          "subjectOf": press_schema()}
     if full:
         p["alumniOf"] = [{"@type": "CollegeOrUniversity", "name": "Санкт-Петербургская государственная художественно-промышленная академия имени А. Л. Штиглица"},
                          {"@type": "CollegeOrUniversity", "name": "Санкт-Петербургский государственный университет промышленных технологий и дизайна"}]
         p["award"] = [f"{t} ({y})" for y, t in AWARDS]
-        p["memberOf"] = {"@type": "ArtGallery", "name": "SAMPLE", "url": "https://sample-art.com/"}
     return p
 
 def website():
@@ -91,8 +90,7 @@ def footer(R, lang="ru"):
 <div><p class="foot-title">{t1}</p><p class="muted" style="max-width:30em">{t2}</p>
 <div class="socials"><a class="ig" href="{LINKS["instagram"]}" rel="me noopener" target="_blank">Instagram @sim.play.art</a>
 <a href="{LINKS["telegram"]}" rel="me noopener" target="_blank">Telegram @simplayart</a>
-<a href="{LINKS["vk"]}" rel="me noopener" target="_blank">ВКонтакте</a>
-<a href="{LINKS["sample"]}" rel="noopener" target="_blank">Галерея SAMPLE</a></div></div>
+<a href="{LINKS["vk"]}" rel="me noopener" target="_blank">ВКонтакте</a></div></div>
 <div class="foot-col"><h4>{t3}</h4><ul>{proj}</ul></div>
 <div class="foot-col"><h4>{"Site" if lang=="en" else "Сайт"}</h4><ul>
 <li><a href="{R}about/">{"About (RU)" if lang=="en" else "Обо мне и CV"}</a></li>
@@ -159,10 +157,26 @@ def verify_tags():
     return t
 
 # ---------------- blocks ----------------
+def gal_btns(items, lang="ru"):
+    """Кнопки «Сейчас в галерее …» у конкретной работы. items: [(ключ GALLERIES, url работы)]"""
+    if not items: return ""
+    lab = "Now at" if lang == "en" else "Сейчас в галерее"
+    out = []
+    for k, url in items:
+        g = GALLERIES[k]
+        out.append(f'<a class="gal-btn" href="{url}" target="_blank" rel="noopener" style="--g:{g["g"]}" '
+                   f'aria-label="{lab} {g["name"]} (откроется сайт галереи)"><i aria-hidden="true">{g["mark"]}</i>'
+                   f'<span><small>{lab}</small><b>{g["name"]}</b></span><em aria-hidden="true">↗</em></a>')
+    return f'<div class="gal-btns">{"".join(out)}</div>'
+
+def gal_offers(items):
+    return [{"@type": "Offer", "url": url, "availability": "https://schema.org/InStock",
+             "seller": {"@type": "ArtGallery", "name": GALLERIES[k]["name"], "url": GALLERIES[k]["url"]}} for k, url in items]
+
 def video_block(R, heading=True):
     cards = []
     for v in VIDEOS:
-        buy = f'<a href="{v["url"]}" target="_blank" rel="noopener">Смотреть в галерее SAMPLE →</a>' if v["url"] else ""
+        buy = gal_btns(IN_GALLERY.get(v["title"], []))
         cards.append(f'''<article class="vcard" style="--c:{v["c"]}">
 <div class="vframe"><video muted loop playsinline preload="none" poster="{R}img/{v["id"]}-poster.webp" data-src="{R}video/{v["id"]}-sborka.mp4" aria-label="{e(v["title"])}: сборка и разборка керамического объекта на магнитах"></video>
 <span class="vbadge">{e(v["title"])}</span>
@@ -319,9 +333,9 @@ def build_index():
 
 <section class="section tint-sky round-top" id="buy"><div class="wrap">
 <div class="section-head reveal"><span class="eyebrow">Где купить</span><h2>Забрать домой</h2>
-<p class="lead">Объекты PLAY и «Облака» представлены в галерее SAMPLE. Другие работы, заказ и коллаборации — напрямую у художницы.</p></div>
+<p class="lead">Ольга работает независимо. Часть работ сейчас в галереях — у каждой такой работы на странице проекта есть кнопка галереи. Остальное, заказ и коллаборации — напрямую у художницы.</p></div>
 <div class="buy reveal">
-<a href="{LINKS["sample"]}" target="_blank" rel="noopener"><b>Галерея SAMPLE</b><span>PLAY 1, PLAY 10, PLAY 12, «Мерцающее облако», «Облака на стене» и другие работы</span><span class="arrow">sample-art.com →</span></a>
+<a href="{R}works/play/#raboty"><b>Работы в галереях</b><span>PLAY, «Облака», воздушные шарики: где сейчас каждая работа — кнопка рядом с ней</span><span class="arrow">Смотреть работы →</span></a>
 <a href="{LINKS["telegram"]}" target="_blank" rel="me noopener"><b>Telegram</b><span>Купить работу напрямую, обсудить заказ или коллаборацию</span><span class="arrow">@simplayart →</span></a>
 <a href="{LINKS["vk"]}" target="_blank" rel="me noopener"><b>ВКонтакте</b><span>Сообщество sim.play.art: новости, работы в наличии</span><span class="arrow">vk.ru/simplayart →</span></a>
 </div></div></section>
@@ -351,10 +365,10 @@ def build_series(s):
             w = []
             for name, year, mat, size, im, where, url in s["works"]:
                 st = '<span class="status wip">в работе</span>' if where == "wip" else ""
-                link = f'<a href="{url}" target="_blank" rel="noopener">Купить в галерее SAMPLE →</a>' if url else ""
+                link = gal_btns(IN_GALLERY.get(name, []))
                 meta = " · ".join(x for x in (year, mat, size) if x)
                 w.append(f'<article class="work reveal">{img(R, im, f"{name}, {year}: {mat} — работа Ольги Симоновой", collect=imgs)}<div><h3>{e(name)}</h3><p>{e(meta)}</p>{st}{link}</div></article>')
-            works = f'<section class="section" style="padding-top:0"><div class="wrap"><h2>Работы</h2><div class="works">{"".join(w)}</div></div></section>'
+            works = f'<section class="section" style="padding-top:0" id="raboty"><div class="wrap"><h2>Работы</h2><div class="works">{"".join(w)}</div></div></section>'
         stitle = s["title"]
         gal = "".join(f'<figure class="reveal">{img(R, n, c + " — " + stitle + ", Ольга Симонова (sim.play.art)", collect=imgs)}<figcaption><b>{e(c)}</b></figcaption></figure>' for n, c in s["gallery"])
         vids = f'<section class="section tint-lilac round-top" id="play-video"><div class="wrap">{video_block(R)}</div></section>' if s["videos"] else ""
@@ -381,7 +395,8 @@ def build_series(s):
             if len(parts) == 2:
                 a["height"] = {"@type": "Distance", "name": parts[0].strip() + " см"}
                 a["width"] = {"@type": "Distance", "name": parts[1].strip() + " см"}
-        if url: a["url"] = url; a["offers"] = {"@type": "Offer", "url": url, "availability": "https://schema.org/InStock", "seller": {"@type": "ArtGallery", "name": "SAMPLE"}}
+        gl = IN_GALLERY.get(name, [])
+        if gl: a["url"] = gl[0][1]; a["offers"] = gal_offers(gl)
         arts.append(a)
     schema = [person(), breadcrumbs([("Главная", ""), (s["title"], path)]),
               {"@type": "CollectionPage", "@id": SITE_URL + "/" + path + "#page", "url": SITE_URL + "/" + path, "name": s["seo_title"],
@@ -470,7 +485,7 @@ def build_play():
 <p class="lead">Соберите свою пирамиду из деталей, придуманных по мотивам работ Ольги Симоновой (sim.play.art): воздушные шарики, груша, яблоко и огрызок, облако, лестница, волна, корона, геометрические фигуры и основания.</p>
 <h2 style="font-size:1.5rem">Зачем этот конструктор</h2>
 <p>В практике Ольги игра — не тема, а метод. Пирамиды PLAY собираются на магнитах: элементы можно соединять, вращать и менять местами, и зритель становится соавтором работы. Конструктор продолжает этот принцип в цифровом виде: правила простые, а вариаций — бесконечно много.</p>
-<p>Здесь можно сделать то, чего нельзя с керамикой: поставить детали друг в друга, сменить глазурь одним касанием, собрать пирамиду высотой в метр. Это игра по мотивам работ, а не копии конкретных объектов. Настоящие пирамиды PLAY — <a href="{R}works/play/">на странице проекта</a>, купить их можно в галерее SAMPLE или напрямую у художницы.</p>
+<p>Здесь можно сделать то, чего нельзя с керамикой: поставить детали друг в друга, сменить глазурь одним касанием, собрать пирамиду высотой в метр. Это игра по мотивам работ, а не копии конкретных объектов. Настоящие пирамиды PLAY — <a href="{R}works/play/">на странице проекта</a>, купить их можно в галереях или напрямую у художницы.</p>
 </div>
 <div>
 <h2 style="font-size:1.5rem">Как сохранить</h2>
@@ -544,7 +559,7 @@ def build_service():
 - Мастерская: собственная, с 2019 года, Санкт-Петербург
 - Награды: {"; ".join(f"{t} ({y})" for y, t in AWARDS)}
 - Избранные выставки: {"; ".join(f"{w}, {p} ({y})" for y, w, p, a, h in hi)}
-- Галерея: SAMPLE — {LINKS["sample"]}
+- Независимая художница. Работы в галереях (что где сейчас — на страницах проектов): SAMPLE — {LINKS["sample"]} · BIZAR — {LINKS["bizar"]}
 - Контакты: Instagram {LINKS["instagram"]} · Telegram {LINKS["telegram"]} · ВКонтакте {LINKS["vk"]}
 
 ## Страницы

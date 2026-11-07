@@ -267,6 +267,22 @@ details.transcript p{color:var(--ink-2);font-size:.95rem}
 .src{display:inline-flex;align-items:center;gap:4px;font-size:.76rem;font-weight:700;text-decoration:none;color:var(--cobalt);background:var(--cobalt-soft);padding:4px 10px;border-radius:999px;transition:background .2s,color .2s}
 .src:hover{background:var(--cobalt);color:#fff}
 .cv-note{font-size:.88rem;margin:-.4em 0 1em}
+/* кнопка «Сейчас в галерее …» у конкретной работы */
+.gal-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.work .gal-btns{padding:0;margin-top:14px}
+.gal-btns a.gal-btn{display:inline-flex;align-items:center;gap:10px;margin:0;padding:5px 14px 5px 5px;border-radius:999px;background:#fff;border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:400;line-height:1.1;position:relative;overflow:hidden;isolation:isolate;transition:color .25s,border-color .25s,transform .2s}
+.gal-btn::before{content:"";position:absolute;inset:0;background:var(--g);transform:translateX(-101%);transition:transform .35s cubic-bezier(.2,.7,.2,1);z-index:-1}
+.gal-btn i{flex:none;width:34px;height:34px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font:600 .95rem/1 var(--f-head);font-style:normal;transition:background .25s,color .25s}
+.gal-btn span{display:flex;flex-direction:column;gap:2px}
+.gal-btn small{font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-2);transition:color .25s}
+.gal-btn b{font:600 .92rem/1 var(--f-head);letter-spacing:.02em}
+.gal-btn em{font-style:normal;font-weight:700;margin-left:2px;transition:transform .25s}
+.gal-btns a.gal-btn:hover,.gal-btns a.gal-btn:focus-visible{color:#fff;border-color:transparent;text-decoration:none;transform:translateY(-1px)}
+.gal-btn:hover::before,.gal-btn:focus-visible::before{transform:none}
+.gal-btn:hover i,.gal-btn:focus-visible i{background:#fff;color:var(--ink)}
+.gal-btn:hover small,.gal-btn:focus-visible small{color:rgba(255,255,255,.8)}
+.gal-btn:hover em,.gal-btn:focus-visible em{transform:translate(2px,-2px)}
+@media(prefers-reduced-motion:reduce){.gal-btn::before,.gal-btn em{transition:none}}
 .reveal{opacity:0;transform:translateY(18px);transition:opacity .8s ease,transform .8s ease}
 .reveal.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.blob{animation:none!important}html{scroll-behavior:auto}}
